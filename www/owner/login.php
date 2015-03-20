@@ -10,6 +10,6 @@
 	Password: <input type="password" name="password"><br>
 	</form>
 	<br>
-	<a>Create Restaurant Owner Account</a>
+	<a href="login.php">Create Restaurant Owner Account</a>
 </body>
 </html>
