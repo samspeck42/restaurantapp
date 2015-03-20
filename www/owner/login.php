@@ -9,5 +9,7 @@
 	Username: <input type="text" name="username"><br>
 	Password: <input type="password" name="password"><br>
 	</form>
+	<br>
+	<a>Create Restaurant Owner Account</a>
 </body>
 </html>
