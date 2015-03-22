@@ -47,6 +47,7 @@
 			$conn = new mysqli($host, $user, $pwrd, $db);
 			
 			if (mysqli_connect_error()) {
+				echo "<html><body>Connection failed: " . $conn->connect_error . "</body></html>";
 				die("Connection failed: " . $conn->connect_error);
 			}
 			
