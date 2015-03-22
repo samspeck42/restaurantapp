@@ -48,7 +48,7 @@
 			
 			if (mysqli_connect_error()) {
 				echo "<html><body>Connection failed: " . $conn->connect_error . "</body></html>";
-				die("Connection failed: " . $conn->connect_error);
+				exit(0);
 			}
 			
 			// check if username is taken
