@@ -1,30 +1,84 @@
 <?php
+	// start session
+	session_start();
+
 	$firstName = $lastName = $username = $password = "";
 	$firstNameErr = $lastNameErr = $usernameErr = $passwordErr = "";
+	$firstNameOk = $lastNameOk = $usernameOk = $passwordOk = false;
 	
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
+		// validate input
 		if (empty($_POST["firstName"])) {
 			$firstNameErr = "*First name is required";
 		} else {
 			$firstName = test_input($_POST["firstName"]);
+			$firstNameOk = true;
 		}
 		
 		if (empty($_POST["lastName"])) {
 			$lastNameErr = "*Last name is required";
 		} else {
 			$lastName = test_input($_POST["lastName"]);
+			$lastNameOk = true;
 		}
 		
 		if (empty($_POST["username"])) {
 			$usernameErr = "*Username is required";
 		} else {
 			$username = test_input($_POST["username"]);
+			$usernameOk = true;
 		}
 		
 		if (empty($_POST["password"])) {
 			$passwordErr = "*Password is required";
 		} else {
 			$password = test_input($_POST["password"]);
+			$passwordOk = true;
+		}
+		
+		
+		if ($firstNameOk && $lastNameOk && $usernameOk && $passwordOk) {
+			$host = "localhost";
+			$user = "samspeck";
+			$pwrd = "ilikeapplepi42";
+			$db = "restaurant_app";
+			
+			// connect to database
+			$conn = new mysqli($host, $user, $pwrd, $db);
+			
+			if (mysqli_connect_error()) {
+				die("Connection failed: " . $conn->connect_error);
+			}
+			
+			// check if username is taken
+			$stmt = $conn->prepare("SELECT UserId FROM user WHERE Username=?");
+			$stmt->bind_param("s", $username);
+			$stmt->execute();
+			$result = $stmt->get_result();
+			
+			if ($result->num_rows > 0) {
+				// username is taken
+				$usernameErr = "*Username is already in use";
+			} else {
+				// username is available, add new user to database
+				$stmt = $conn->prepare("INSERT INTO user (Username, Password, FirstName, LastName) VALUES (?, ?, ?, ?)");
+				$stmt->bind_param("ssss", $username, $password, $firstName, $lastName);
+				$stmt->execute();
+				
+				// get user id of newly created user
+				$userId = $stmt->insert_id;
+				
+				// set user id session variable
+				$_SESSION["user_id"] = $userId;
+				
+				// redirect to welcome page
+				header("Location: welcome.php");
+				die();
+			}
+			
+			// close connection
+			$stmt->close();
+			$conn->close();
 		}
 	}
 	
