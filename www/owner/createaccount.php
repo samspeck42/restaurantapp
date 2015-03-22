@@ -55,9 +55,9 @@
 			$stmt = $conn->prepare("SELECT UserId FROM user WHERE Username=?");
 			$stmt->bind_param("s", $username);
 			$stmt->execute();
-			$result = $stmt->get_result();
+			$stmt->bind_result($result);
 			
-			if ($result->num_rows > 0) {
+			if ($stmt->fetch()) {
 				// username is taken
 				$usernameErr = "*Username is already in use";
 			} else {
