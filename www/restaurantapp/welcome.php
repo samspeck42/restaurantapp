@@ -1,4 +1,6 @@
 <?php
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
+
 // start session
 session_start();
 
@@ -11,17 +13,8 @@ if (!isset($_SESSION["user_id"])) {
 	$isOwner = $_SESSION["is_owner"];
 	$isEmployee = $_SESSION["is_employee"];
 	
-	$host = "localhost";
-	$user = "samspeck";
-	$pwrd = "ilikeapplepi42";
-	$db = "restaurant_app";
-	
 	// connect to database
-	$conn = new mysqli($host, $user, $pwrd, $db);
-	
-	if (mysqli_connect_error()) {
-		die("Connection failed: " . $conn->connect_error);
-	}
+	$conn = make_connection();
 	
 	// get first name for logged in user from database
 	$firstName = "";

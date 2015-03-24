@@ -1,98 +1,84 @@
 <?php
-	// start session
-	session_start();
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/userinput.php";
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
 
-	$firstName = $lastName = $username = $password = "";
-	$firstNameErr = $lastNameErr = $usernameErr = $passwordErr = "";
-	$firstNameOk = $lastNameOk = $usernameOk = $passwordOk = false;
+// start session
+session_start();
+
+$firstName = $lastName = $username = $password = "";
+$firstNameErr = $lastNameErr = $usernameErr = $passwordErr = "";
+$firstNameOk = $lastNameOk = $usernameOk = $passwordOk = false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	// validate input
+	if (empty($_POST["firstName"])) {
+		$firstNameErr = "*First name is required";
+	} else {
+		$firstName = test_input($_POST["firstName"]);
+		$firstNameOk = true;
+	}
 	
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		// validate input
-		if (empty($_POST["firstName"])) {
-			$firstNameErr = "*First name is required";
+	if (empty($_POST["lastName"])) {
+		$lastNameErr = "*Last name is required";
+	} else {
+		$lastName = test_input($_POST["lastName"]);
+		$lastNameOk = true;
+	}
+	
+	if (empty($_POST["username"])) {
+		$usernameErr = "*Username is required";
+	} else {
+		$username = test_input($_POST["username"]);
+		$usernameOk = true;
+	}
+	
+	if (empty($_POST["password"])) {
+		$passwordErr = "*Password is required";
+	} else {
+		$password = test_input($_POST["password"]);
+		$passwordOk = true;
+	}
+	
+	
+	if ($firstNameOk && $lastNameOk && $usernameOk && $passwordOk) {
+		// connect to database
+		$conn = make_connection();
+		
+		// check if username is taken
+		$stmt = $conn->prepare("SELECT UserId FROM user WHERE Username=?");
+		$stmt->bind_param("s", $username);
+		$stmt->execute();
+		$stmt->bind_result($result);
+		
+		if ($stmt->fetch()) {
+			// username is taken
+			$usernameErr = "*Username is already in use";
 		} else {
-			$firstName = test_input($_POST["firstName"]);
-			$firstNameOk = true;
-		}
-		
-		if (empty($_POST["lastName"])) {
-			$lastNameErr = "*Last name is required";
-		} else {
-			$lastName = test_input($_POST["lastName"]);
-			$lastNameOk = true;
-		}
-		
-		if (empty($_POST["username"])) {
-			$usernameErr = "*Username is required";
-		} else {
-			$username = test_input($_POST["username"]);
-			$usernameOk = true;
-		}
-		
-		if (empty($_POST["password"])) {
-			$passwordErr = "*Password is required";
-		} else {
-			$password = test_input($_POST["password"]);
-			$passwordOk = true;
-		}
-		
-		
-		if ($firstNameOk && $lastNameOk && $usernameOk && $passwordOk) {
-			$host = "localhost";
-			$user = "samspeck";
-			$pwrd = "ilikeapplepi42";
-			$db = "restaurant_app";
-			
-			// connect to database
-			$conn = new mysqli($host, $user, $pwrd, $db);
-			
-			if (mysqli_connect_error()) {
-				echo "<html><body>Connection failed: " . $conn->connect_error . "</body></html>";
-				exit(0);
-			}
-			
-			// check if username is taken
-			$stmt = $conn->prepare("SELECT UserId FROM user WHERE Username=?");
-			$stmt->bind_param("s", $username);
+			// username is available, add new user to database
+			$isOwner = 1;
+			$isEmployee = 0;
+			$stmt = $conn->prepare("INSERT INTO user (Username, Password, FirstName, LastName, IsOwner, IsEmployee) VALUES (?, ?, ?, ?, ?, ?)");
+			$stmt->bind_param("ssssii", $username, $password, $firstName, $lastName, $isOwner, $isEmployee);
 			$stmt->execute();
-			$stmt->bind_result($result);
 			
-			if ($stmt->fetch()) {
-				// username is taken
-				$usernameErr = "*Username is already in use";
-			} else {
-				// username is available, add new user to database
-				$isOwner = 1;
-				$isEmployee = 0;
-				$stmt = $conn->prepare("INSERT INTO user (Username, Password, FirstName, LastName, IsOwner, IsEmployee) VALUES (?, ?, ?, ?, ?, ?)");
-				$stmt->bind_param("ssssii", $username, $password, $firstName, $lastName, $isOwner, $isEmployee);
-				$stmt->execute();
-				
-				// get user id of newly created user
-				$userId = $stmt->insert_id;
-				
-				// set user id session variable
-				$_SESSION["user_id"] = $userId;
-				$_SESSION["is_owner"] = $isOwner;
-				$_SESSION["is_employee"] = $isEmployee;
-				
-				// redirect to welcome page
-				header("Location: /restaurantapp/welcome.php");
-				die();
-			}
+			// get user id of newly created user
+			$userId = $stmt->insert_id;
 			
-			// close connection
-			$stmt->close();
-			$conn->close();
+			// set user id session variable
+			$_SESSION["user_id"] = $userId;
+			$_SESSION["is_owner"] = $isOwner;
+			$_SESSION["is_employee"] = $isEmployee;
+			
+			// redirect to welcome page
+			header("Location: /restaurantapp/welcome.php");
+			die();
 		}
+		
+		// close connection
+		$stmt->close();
+		$conn->close();
 	}
-	
-	function test_input($inp) {
-		$inp = trim($inp);
-		$inp = stripslashes($inp);
-		$inp = htmlspecialchars($inp);
-		return $inp;
-	}
+}
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,4 +1,7 @@
 <?php
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/userinput.php";
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
+
 // start session
 session_start();
 
@@ -10,18 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$username = test_input($_POST["username"]);
 	$password = test_input($_POST["password"]);
 	
-	$host = "localhost";
-	$user = "samspeck";
-	$pwrd = "ilikeapplepi42";
-	$db = "restaurant_app";
-	
 	// connect to database
-	$conn = new mysqli($host, $user, $pwrd, $db);
-	
-	if (mysqli_connect_error()) {
-		echo "<html><body>Connection failed: " . $conn->connect_error . "</body></html>";
-		exit(0);
-	}
+	$conn = make_connection();
 	
 	// check if user exists
 	$stmt = $conn->prepare("SELECT UserId, IsOwner, IsEmployee FROM user WHERE Username=? AND Password=?");
@@ -42,13 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		// user doesn't exist
 		$loginErr = "*Invalid username/password combination";
 	}
-}
-
-function test_input($inp) {
-	$inp = trim($inp);
-	$inp = stripslashes($inp);
-	$inp = htmlspecialchars($inp);
-	return $inp;
 }
 ?>
 <!DOCTYPE html>
