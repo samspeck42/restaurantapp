@@ -83,6 +83,6 @@ function test_input($inp) {
 	</form>
 	
 	<br>
-	<a href="owner/createaccount.php">Create Restaurant Owner Account</a>
+	<a href="createaccount.php">Create Restaurant Owner Account</a>
 </body>
 </html>
