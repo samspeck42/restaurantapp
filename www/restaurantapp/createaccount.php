@@ -37,6 +37,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$passwordOk = true;
 	}
 	
+	$isOwner = 0;
+	if (isset($_POST["isOwner"])) {
+		$isOwner = 1;
+	}
+	
+	$isEmployee = 0;
+	if (isset($_POST["isEmployee"])) {
+		$isEmployee = 1;
+	}
+	
 	
 	if ($firstNameOk && $lastNameOk && $usernameOk && $passwordOk) {
 		// connect to database
@@ -53,8 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$usernameErr = "*Username is already in use";
 		} else {
 			// username is available, add new user to database
-			$isOwner = 1;
-			$isEmployee = 0;
 			$stmt = $conn->prepare("INSERT INTO user (Username, Password, FirstName, LastName, IsOwner, IsEmployee) VALUES (?, ?, ?, ?, ?, ?)");
 			$stmt->bind_param("ssssii", $username, $password, $firstName, $lastName, $isOwner, $isEmployee);
 			$stmt->execute();
@@ -107,6 +115,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<td><input type="password" name="confirmPassword"></td>
 			</tr>
 		</table>
+		<br>
+		<input type="checkbox" name="isOwner" value="1"> Owner Account</input><br>
+		<input type="checkbox" name="isEmployee" value="1"> Employee Account</input>
 		
 		<br>
 		<span style="color:#FF0000" id="error">
