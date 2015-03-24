@@ -1,24 +1,19 @@
 <?php
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/session.php";
 
-// start session
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
+if (!is_logged_in()) {
 	// not logged in, redirect to login page
 	header("Location: login.php");
 	die();
 } else {
-	$userId = $_SESSION["user_id"];
-	$isOwner = $_SESSION["is_owner"];
-	$isEmployee = $_SESSION["is_employee"];
+	load_session();
 	
 	// connect to database
 	$conn = make_connection();
 	
 	// get first name for logged in user from database
 	$firstName = "";
-	
 	$sql = "SELECT FirstName FROM user WHERE UserId=" . $userId;
 	$result = $conn->query($sql);
 	

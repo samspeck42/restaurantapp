@@ -1,9 +1,7 @@
 <?php
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/userinput.php";
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
-
-// start session
-session_start();
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/session.php";
 
 $username = $password = "";
 $loginErr = "";
@@ -24,9 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 	if ($stmt->fetch()) {
 		// user exists, log them in
-		$_SESSION["user_id"] = $userId;
-		$_SESSION["is_owner"] = $isOwner;
-		$_SESSION["is_employee"] = $isEmployee;
+		store_session();
 		
 		// redirect to welcome page
 		header("Location: welcome.php");

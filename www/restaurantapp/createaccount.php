@@ -1,9 +1,7 @@
 <?php
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/userinput.php";
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
-
-// start session
-session_start();
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/session.php";
 
 $firstName = $lastName = $username = $password = "";
 $firstNameErr = $lastNameErr = $usernameErr = $passwordErr = "";
@@ -64,10 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			// get user id of newly created user
 			$userId = $stmt->insert_id;
 			
-			// set user id session variable
-			$_SESSION["user_id"] = $userId;
-			$_SESSION["is_owner"] = $isOwner;
-			$_SESSION["is_employee"] = $isEmployee;
+			store_session();
 			
 			// redirect to welcome page
 			header("Location: /restaurantapp/welcome.php");
