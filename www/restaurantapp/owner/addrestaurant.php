@@ -1,4 +1,5 @@
 <?php
+include $_SERVER["DOCUMENT_ROOT"] . "/includes/userinput.php";
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/connection.php";
 include $_SERVER["DOCUMENT_ROOT"] . "/includes/session.php";
 
@@ -16,12 +17,23 @@ if (!is_logged_in()) {
 ?>
 <html>
 <head>
-	<title>My Restaurants</title>
+	<title>Add Restaurant</title>
 </head>
 
 <body>
-	<h2>My Restaurants</h2>
-	<br>
-	<a href="addrestaurant.php">Add New Restaurant</a>
+	<h2>Restaurant Details:</h2>
+	
+	<form action="addrestaurant.php" method="post">
+		<table style="width:30%">
+			<tr>
+				<td>Name: </td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>Address: </td>
+				<td><input type="text" name="address"></td>
+			</tr>
+		</table>
+	</form>
 </body>
 </html>

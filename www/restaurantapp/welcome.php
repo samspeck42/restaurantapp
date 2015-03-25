@@ -5,7 +5,7 @@ include $_SERVER["DOCUMENT_ROOT"] . "/includes/session.php";
 if (!is_logged_in()) {
 	// not logged in, redirect to login page
 	header("Location: login.php");
-	die();
+	exit(0);
 } else {
 	load_session();
 	
@@ -31,13 +31,10 @@ if (!is_logged_in()) {
 
 <body>
 	<h2>Welcome <?php echo $firstName; ?>!</h2>
-	<br>
+	<a href="">Find Restaurants</a><br>
 	<?php
 	if ($isOwner) {
-		echo "You are a restaurant owner.<br>";
-	}
-	if ($isEmployee) {
-		echo "You are a restaurant employee.<br>";
+		echo "<a href=\"owner/myrestaurants.php\">My Restaurants</a><br>";
 	}
 	?>
 </body>
