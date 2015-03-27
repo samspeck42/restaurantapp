@@ -63,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	</span>
 	<input type="submit" value="Submit">
 	</form>
-	
 	<br>
 	<a href="createaccount.php">Create Restaurant Owner Account</a>
 </body>

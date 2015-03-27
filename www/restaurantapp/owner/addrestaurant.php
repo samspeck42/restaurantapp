@@ -14,6 +14,46 @@ if (!is_logged_in()) {
 	header("Location: /restaurantapp/welcome.php");
 	exit(0);
 }
+
+$name = $address = "";
+$nameErr = $addressErr = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	// validate input
+	$inputValid = true;
+	
+	if (empty($_POST["name"])) {
+		$nameErr = "*Name is required";
+		$inputValid = false;
+	} else {
+		$name = test_input($_POST["name"]);
+	}
+	
+	if (empty($_POST["address"])) {
+		$addressErr = "*Address is required";
+		$inputValid = false;
+	} else {
+		$address = test_input($_POST["address"]);
+	}
+	
+	if ($inputValid) {
+		// connect to database
+		$conn = make_connection();
+		
+		// add new restaurant to database
+		$stmt = $conn->prepare("INSERT INTO restaurant (RestaurantName, Address, OwnerUserId) VALUES (?, ?, ?)");
+		$stmt->bind_param("ssi", $name, $address, $userId);
+		$stmt->execute();
+		
+		// close connection
+		$stmt->close();
+		$conn->close();
+		
+		// redirect to my restaurants page
+		header("Location: /restaurantapp/owner/myrestaurants.php");
+		exit(0);
+	}
+}
 ?>
 <html>
 <head>
@@ -34,6 +74,20 @@ if (!is_logged_in()) {
 				<td><input type="text" name="address"></td>
 			</tr>
 		</table>
+		
+		<br>
+		<span style="color:#FF0000" id="error">
+		<?php
+		if (!empty($nameErr)) {
+			echo $nameErr . "<br>";
+		}
+		if (!empty($addressErr)) {
+			echo $addressErr . "<br>";
+		}
+		?>
+		</span>
+		<br>
+		<input type="submit" value="Submit">
 	</form>
 </body>
 </html>

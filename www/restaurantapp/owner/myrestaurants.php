@@ -13,6 +13,20 @@ if (!is_logged_in()) {
 	header("Location: /restaurantapp/welcome.php");
 	exit(0);
 }
+
+// connect to database
+$conn = make_connection();
+
+// get restaurants for this user from the database
+$sql = "SELECT * FROM restaurant WHERE OwnerUserId=" . $userId;
+$result = $conn->query($sql);
+$index = 0;
+while ($row = $result->fetch_assoc()) {
+	$restaurants[$index] = $row;
+	$index++;
+}
+
+$conn->close();
 ?>
 <html>
 <head>
@@ -21,6 +35,13 @@ if (!is_logged_in()) {
 
 <body>
 	<h2>My Restaurants</h2>
+	<?php
+	if (isset($restaurants)) {
+		foreach ($restaurants as $res) {
+			echo "<a href=\"\">" . $res["RestaurantName"] . "</a><br>";
+		}
+	}
+	?>
 	<br>
 	<a href="addrestaurant.php">Add New Restaurant</a>
 </body>

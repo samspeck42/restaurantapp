@@ -21,6 +21,8 @@ if (!is_logged_in()) {
 		$row = $result->fetch_assoc();
 		$firstName = $row["FirstName"];
 	}
+	
+	$conn->close();
 }
 ?>
 <!DOCTYPE html>

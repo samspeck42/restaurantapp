@@ -72,9 +72,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			
 			store_session();
 			
+			// close connection
+			$stmt->close();
+			$conn->close();
+			
 			// redirect to welcome page
 			header("Location: /restaurantapp/welcome.php");
-			die();
+			exit(0);
 		}
 		
 		// close connection
