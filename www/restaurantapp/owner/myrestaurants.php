@@ -38,7 +38,7 @@ $conn->close();
 	<?php
 	if (isset($restaurants)) {
 		foreach ($restaurants as $res) {
-			echo "<a href=\"\">" . $res["RestaurantName"] . "</a><br>";
+			echo "<a href=\"restaurant.php?restaurantId=" . $res["RestaurantId"] . "\">" . $res["RestaurantName"] . "</a><br>";
 		}
 	}
 	?>
