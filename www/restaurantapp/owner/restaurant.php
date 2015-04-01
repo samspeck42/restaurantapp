@@ -43,6 +43,7 @@ if (isset($_GET["restaurantId"])) {
 	}
 	?>
 	</title>
+	<?php include $_SERVER["DOCUMENT_ROOT"] . "/includes/head.php"; ?>
 </head>
 
 <body>

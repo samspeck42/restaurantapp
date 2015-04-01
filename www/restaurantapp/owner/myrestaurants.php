@@ -31,6 +31,7 @@ $conn->close();
 <html>
 <head>
 	<title>My Restaurants</title>
+	<?php include $_SERVER["DOCUMENT_ROOT"] . "/includes/head.php"; ?>
 </head>
 
 <body>

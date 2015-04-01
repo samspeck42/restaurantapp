@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html>
 <head>
 	<title>Add Restaurant</title>
+	<?php include $_SERVER["DOCUMENT_ROOT"] . "/includes/head.php"; ?><?php include $_SERVER["DOCUMENT_ROOT"] . "/includes/head.php"; ?>
 </head>
 
 <body>

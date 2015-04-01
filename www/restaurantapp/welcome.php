@@ -29,6 +29,7 @@ if (!is_logged_in()) {
 <html>
 <head>
 	<title>Welcome!</title>
+	<?php include $_SERVER["DOCUMENT_ROOT"] . "/includes/head.php"; ?>
 </head>
 
 <body>

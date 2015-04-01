@@ -1,0 +1,84 @@
+body {
+	font-family: "Arial Black", Gadget, sans-serif;
+}
+
+.menu {
+	border: 2px solid #8AB8E6;
+	border-radius: 10px;
+	background: #E0F0FF;
+	padding: 10px;
+	margin: 10px;
+	width: 440px;
+	box-shadow: 2px 2px 15px #B8B8B8;
+}
+
+.menu h1 {
+	margin: 0 0 0.3em;
+	font-size: 1.75em;
+	line-height: 1.1em;
+}
+
+.menu h2 {
+	margin: 0 0 0.3em;
+	font-size: 1.5em;
+	line-height: 1.1em;
+}
+
+.menu .details {
+	font-style: italic;
+}
+
+.menu-category {
+	border: 2px solid #8AB8E6;
+	border-radius: 10px;
+	background: #F3F9FF;
+	padding: 10px;
+	margin: 0 0 10px;
+}
+
+ul.menu-items {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+ul.menu-items li {
+	padding: 5px;
+}
+
+ul.menu-items li.light {
+	background: #EBEBEB;
+}
+
+ul.menu-items li.dark {
+	background: #CCCCCC;
+}
+
+.navbar {
+    background-color: #CC0000;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar a:link, .navbar a:visited {
+    display: block;
+    color: #FFFFFF;
+    background-color: #CC0000;
+    text-align: center;
+    padding: 8px 20px 8px 20px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.navbar a:hover, .navbar a:active {
+    background-color: #DA4747;
+}
